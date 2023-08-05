@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var animationStarted = false
     
     var foreverAnimation: Animation {
-        Animation.linear(duration: Double.random(in: 2...20))
+        Animation.linear(duration: Double.random(in: 1...30))
             .repeatForever(autoreverses: false)
     }
     
@@ -24,10 +24,10 @@ struct ContentView: View {
                 HStack {
                     ForEach(0..<30) { _ in
                         VStack {
-                            ForEach(0..<100) { _ in
+                            ForEach(0..<200) { _ in
                                 RandomElementView()
                                     .offset(y: animationStarted ?  1000 : -1000)
-                                    .opacity(Double.random(in: 0...1))
+                                    .opacity(Double.random(in: 0.1...1))
                                     .animation(foreverAnimation, value: animationStarted)
                             }
                         }
