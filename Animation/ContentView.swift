@@ -33,8 +33,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                .opacity(animationStarted ? 1 : 0)
             }
         }
         .onAppear {
@@ -52,8 +50,8 @@ struct ContentView_Previews: PreviewProvider {
 
 struct RandomElementView: View {
     var body: some View {
-        let element = Int.random(in: 0...9)
-        Text("\(element)")
+        let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        Text(String(characters.randomElement() ?? " "))
             .frame(width: 10)
             .foregroundColor(.green)
     }
