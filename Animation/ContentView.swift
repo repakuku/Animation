@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var animationStarted = false
     
     var foreverAnimation: Animation {
-        Animation.linear(duration: Double.random(in: 1...30))
+        Animation.linear(duration: Double.random(in: 1...10))
             .repeatForever(autoreverses: false)
     }
     
@@ -26,7 +26,7 @@ struct ContentView: View {
                         VStack {
                             ForEach(0..<200) { _ in
                                 RandomElementView()
-                                    .offset(y: animationStarted ?  1000 : -1000)
+                                    .offset(y: animationStarted ?  0 : -1000)
                                     .opacity(Double.random(in: 0.1...1))
                                     .animation(foreverAnimation, value: animationStarted)
                             }
@@ -35,8 +35,8 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear {
-                animationStarted.toggle()
+        .onTapGesture {
+            animationStarted.toggle()
         }
     }
     
