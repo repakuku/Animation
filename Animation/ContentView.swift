@@ -7,12 +7,23 @@
 
 import SwiftUI
 
+
+
 struct ContentView: View {
     @State private var animationStarted = false
+    @State private var isAnimationLinear = false
     
-    var foreverAnimation: Animation {
-        Animation.linear(duration: Double.random(in: 1...30))
+    var foreverLinearAnimation: Animation {
+        Animation.linear(duration: Double.random(in: 2...20))
             .repeatForever(autoreverses: false)
+    }
+    
+    var foreverSpringAnimation: Animation {
+        Animation.spring(
+            response: Double.random(in: 0...2),
+            dampingFraction: Double.random(in: 0...2),
+            blendDuration: Double.random(in: 0...2))
+        .repeatForever(autoreverses: true)
     }
     
     var body: some View {
@@ -22,13 +33,22 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 
                 HStack {
-                    ForEach(0..<30) { _ in
-                        VStack {
-                            ForEach(0..<200) { _ in
-                                RandomElementView()
-                                    .offset(y: animationStarted ?  1000 : -1000)
-                                    .opacity(Double.random(in: 0.1...1))
-                                    .animation(foreverAnimation, value: animationStarted)
+                    ForEach(0..<22) { _ in
+                        ZStack {
+                            ForEach(0..<100) { _ in
+                                let height = UIScreen.main.bounds.height
+                                
+                                if isAnimationLinear {
+                                    RandomElementView()
+                                        .offset(y: animationStarted ?  height / 2 : -height / 2 - 25)
+                                        .opacity(Double.random(in: 0.1...1))
+                                        .animation(foreverLinearAnimation, value: animationStarted)
+                                } else {
+                                    RandomElementView()
+                                        .offset(y: animationStarted ?  height / 2 : -height / 2 - 25)
+                                        .opacity(Double.random(in: 0.1...1))
+                                        .animation(foreverSpringAnimation, value: animationStarted)
+                                }
                             }
                         }
                     }
@@ -36,10 +56,12 @@ struct ContentView: View {
             }
         }
         .onAppear {
-                animationStarted.toggle()
+            animationStarted.toggle()
+        }
+        .onTapGesture {
+            isAnimationLinear.toggle()
         }
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -52,7 +74,8 @@ struct RandomElementView: View {
     var body: some View {
         let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         Text(String(characters.randomElement() ?? " "))
-            .frame(width: 10)
+//        Image(systemName: "star")
+            .scaledToFill()
             .foregroundColor(.green)
     }
 }
